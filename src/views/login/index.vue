@@ -50,6 +50,8 @@ export default {
       ruleForm: {
         username: null, // 修改
         password: null,
+        email: null,
+        phone: null,
         type: null,
       },
       rules: {
@@ -82,6 +84,8 @@ export default {
           }
           let check = false
           let name = null
+          let email = null
+          let phone = null
 
           axios.get('http://localhost:10086/info/getCurrentTerm').then(function (resp) {
             sessionStorage.setItem("currentTerm", resp.data)
@@ -92,7 +96,7 @@ export default {
           })
 
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
-            let form = { username: that.ruleForm.username, password: that.ruleForm.password } // 修改
+            let form = { username: that.ruleForm.username, password: that.ruleForm.password} // 修改
             console.log(form)
             axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
               console.log("教师登陆验证信息：" + resp.data)
@@ -101,13 +105,19 @@ export default {
                 axios.get("http://localhost:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data)
                   name = resp.data.tname
+                  email = resp.data.email
+                  phone = resp.data.phone
 
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
                   sessionStorage.setItem("name", name)
+                  sessionStorage.setItem("email", email)
+                  sessionStorage.setItem("phone", phone)
+                  // sessionStorage.setItem("name", name)
+
                   sessionStorage.setItem("tid", resp.data.tid)
 
-                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.tid)
+                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.tid, 'email:' + email)
 
                   if (that.ruleForm.type === 'admin' && name === 'admin') {
                     that.$message({

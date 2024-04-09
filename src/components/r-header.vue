@@ -18,12 +18,14 @@ export default {
   data() {
     return {
       name: null,
-      currentTerm: null
+      currentTerm: null,
+      phone: null,
     }
   },
   created() {
     this.name = sessionStorage.getItem("name")
     this.currentTerm = sessionStorage.getItem("currentTerm")
+    this.phone = sessionStorage.getItem("phone")
   },
   methods: {
     out() {
