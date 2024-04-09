@@ -16,12 +16,12 @@
           </div>
           <div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-              <el-form-item label="用户 id" prop="id">
-                <el-input v-model.number="ruleForm.id" prefix-icon="el-icon-lollipop"></el-input>
+              <el-form-item label="用户名" prop="username">
+                <el-input v-model="ruleForm.username" prefix-icon="el-icon-user"></el-input>
               </el-form-item>
               <el-form-item label="用户密码" prop="password">
                 <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password
-                  prefix-icon="el-icon-ice-cream-round"></el-input>
+                  prefix-icon="el-icon-lock"></el-input>
               </el-form-item>
               <el-form-item label="用户类型" prop="type">
                 <el-radio-group v-model="ruleForm.type">
@@ -42,19 +42,19 @@
     </el-container>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       ruleForm: {
-        id: null,
+        username: null, // 修改
         password: null,
         type: null,
       },
       rules: {
-        id: [
-          { required: true, message: '请输入用户 id', trigger: 'blur' },
-          { type: 'number', message: '请输入数字', trigger: 'blur' },
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -92,13 +92,13 @@ export default {
           })
 
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
-            let form = { tid: that.ruleForm.id, password: that.ruleForm.password }
+            let form = { username: that.ruleForm.username, password: that.ruleForm.password } // 修改
             console.log(form)
             axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
               console.log("教师登陆验证信息：" + resp.data)
               check = resp.data
               if (check === true) {
-                axios.get("http://localhost:10086/teacher/findById/" + that.ruleForm.id).then(function (resp) {
+                axios.get("http://localhost:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data)
                   name = resp.data.tname
 
@@ -144,12 +144,12 @@ export default {
             })
           }
           else if (that.ruleForm.type === 'student') {
-            let form = { sid: that.ruleForm.id, password: that.ruleForm.password }
+            let form = { username: that.ruleForm.username, password: that.ruleForm.password } // 修改
             axios.post("http://localhost:10086/student/login", form).then(function (resp) {
               console.log("学生登陆验证信息：" + resp.data)
               check = resp.data
               if (check === true) {
-                axios.get("http://localhost:10086/student/findById/" + that.ruleForm.id).then(function (resp) {
+                axios.get("http://localhost:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data)
                   name = resp.data.sname
 
