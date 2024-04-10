@@ -4,7 +4,7 @@
       <el-header>
         <div style="text-align: center; font-size: 25px; font-weight: bolder">
           <i class="el-icon-s-home" style="margin-right: 25px"></i>
-          选课管理系统
+          学生管理系统
         </div>
       </el-header>
       <el-main>
@@ -30,6 +30,29 @@
                   <el-radio label="admin" value="admin">admin</el-radio>
                 </el-radio-group>
               </el-form-item>
+
+              <!-- <div>
+                <el-input v-model="input" placeholder="请输入内容"></el-input>
+                <span @click="refreshCode" style="cursor: pointer;">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+                </span>
+              </div> -->
+
+              <el-row :gutter="20" style="display: flex; justify-content: center;">
+                <el-col :span="8">
+                  <div style="width: 50px;"></div> <!-- 添加一个空的 div，宽度为 50px -->
+                  <el-input v-model="input" placeholder="请输入验证码"></el-input>
+                </el-col>
+                <el-col :span="6">
+                  <span @click="refreshCode" style="cursor: pointer;">
+                    <s-identify :identifyCode="identifyCode"></s-identify>
+                  </span>
+                </el-col>
+              </el-row>
+
+
+
+
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -44,10 +67,19 @@
 </template>
 
 <script>
+// 引入图片验证码组件
+import SIdentify from '@/components/identify'
 export default {
+  components: { SIdentify },
   data() {
     return {
+      input: '',
+      // 图片验证码
+      identifyCode: '',
+      // 验证码规则
+      identifyCodes: '3456789ABCDEFGHGKMNPQRSTUVWXY',
       ruleForm: {
+        identifyCode: '',// 输入框中的验证码
         username: null, // 修改
         password: null,
         email: null,
@@ -67,11 +99,29 @@ export default {
       }
     };
   },
+  computed: {
+    // 计算属性，判断输入框中的值是否与验证码相同
+    isIdentifyCodeCorrect() {
+      return this.input === this.identifyCode;
+    }
+  },
   methods: {
+    // 切换验证码
+    refreshCode() {
+      this.identifyCode = ''
+      this.makeCode(this.identifyCodes, 4)
+    },
+    // 生成随机验证码
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          Math.floor(Math.random() * (this.identifyCodes.length - 0) + 0)
+        ]
+      }
+    },
     submitForm(formName) {
-      const that = this
+      const that = this;
       this.$refs[formName].validate((valid) => {
-
         if (valid) {
           // 添加密码长度检查逻辑
           if (that.ruleForm.password.length < 5) {
@@ -82,42 +132,58 @@ export default {
             });
             return;
           }
-          let check = false
-          let name = null
-          let email = null
-          let phone = null
 
-          axios.get('http://localhost:10086/info/getCurrentTerm').then(function (resp) {
-            sessionStorage.setItem("currentTerm", resp.data)
-          })
+          // 验证码验证逻辑
+          if (that.input !== that.identifyCode) {
+            that.$message({
+              showClose: true,
+              message: '验证码错误',
+              type: 'error'
+            });
+            return;
+          }
 
-          axios.get('http://localhost:10086/info/getForbidCourseSelection').then(function (resp) {
-            sessionStorage.setItem("ForbidCourseSelection", resp.data)
-          })
+          // 发送请求获取当前学期
+          axios.get('http://localhost:10086/info/getCurrentTerm')
+            .then(function (resp) {
+              // 获取到后端返回的当前学期值
+              const currentTerm = resp.data;
+              // 将当前学期值存储在前端的 sessionStorage 中
+              sessionStorage.setItem("currentTerm", currentTerm);
+            })
+            .catch(function (error) {
+              // 处理请求错误的逻辑
+              console.error("获取当前学期信息失败：" + error);
+              // 可以在这里给出错误提示，比如弹出消息框
+              that.$message({
+                showClose: true,
+                message: '获取当前学期信息失败，请稍后再试',
+                type: 'error'
+              });
+            });
 
+
+
+          // 表单验证通过后，进行登录逻辑
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
-            let form = { username: that.ruleForm.username, password: that.ruleForm.password} // 修改
-            console.log(form)
+            let form = { username: that.ruleForm.username, password: that.ruleForm.password };
             axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
-              console.log("教师登陆验证信息：" + resp.data)
-              check = resp.data
+              console.log("教师登陆验证信息：" + resp.data);
+              let check = resp.data;
               if (check === true) {
+                // 登录成功后的逻辑...
                 axios.get("http://localhost:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
-                  console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.tname
-                  email = resp.data.email
-                  phone = resp.data.phone
+                  console.log("登陆页正在获取用户信息" + resp.data);
+                  let name = resp.data.tname;
+                  let email = resp.data.email;
+                  let phone = resp.data.phone;
 
-                  sessionStorage.setItem("token", 'true')
-                  sessionStorage.setItem("type", that.ruleForm.type)
-                  sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("email", email)
-                  sessionStorage.setItem("phone", phone)
-                  // sessionStorage.setItem("name", name)
-
-                  sessionStorage.setItem("tid", resp.data.tid)
-
-                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.tid, 'email:' + email)
+                  sessionStorage.setItem("token", 'true');
+                  sessionStorage.setItem("type", that.ruleForm.type);
+                  sessionStorage.setItem("name", name);
+                  sessionStorage.setItem("email", email);
+                  sessionStorage.setItem("phone", phone);
+                  sessionStorage.setItem("tid", resp.data.tid);
 
                   if (that.ruleForm.type === 'admin' && name === 'admin') {
                     that.$message({
@@ -125,48 +191,49 @@ export default {
                       message: '登陆成功，欢迎 ' + name + '!',
                       type: 'success'
                     });
-                    that.$router.push('/admin')
-                  }
-                  else if (that.ruleForm.type === 'teacher' && name !== 'admin') {
+                    that.$router.push('/admin');
+                  } else if (that.ruleForm.type === 'teacher' && name !== 'admin') {
                     that.$message({
                       showClose: true,
                       message: '登陆成功，欢迎 ' + name + '!',
                       type: 'success'
                     });
-                    that.$router.push('/teacher')
-                  }
-                  else {
+                    that.$router.push('/teacher');
+                  } else {
                     that.$message({
                       showClose: true,
                       message: 'admin 登陆失败，检查登陆类型',
                       type: 'error'
                     });
                   }
-                })
-              }
-              else {
+                });
+              } else {
+                // 登录失败后的逻辑...
                 that.$message({
                   showClose: true,
                   message: '登陆失败，检查账号密码',
                   type: 'error'
                 });
               }
-            })
-          }
-          else if (that.ruleForm.type === 'student') {
-            let form = { username: that.ruleForm.username, password: that.ruleForm.password } // 修改
+            }).catch(function (error) {
+              console.error("教师登陆验证错误：" + error);
+              // 处理登录验证错误的逻辑...
+            });
+          } else if (that.ruleForm.type === 'student') {
+            let form = { username: that.ruleForm.username, password: that.ruleForm.password };
             axios.post("http://localhost:10086/student/login", form).then(function (resp) {
-              console.log("学生登陆验证信息：" + resp.data)
-              check = resp.data
+              console.log("学生登陆验证信息：" + resp.data);
+              let check = resp.data;
               if (check === true) {
+                // 登录成功后的逻辑...
                 axios.get("http://localhost:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
-                  console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.sname
+                  console.log("登陆页正在获取用户信息" + resp.data);
+                  let name = resp.data.sname;
 
-                  sessionStorage.setItem("token", 'true')
-                  sessionStorage.setItem("type", that.ruleForm.type)
-                  sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("sid", resp.data.sid)
+                  sessionStorage.setItem("token", 'true');
+                  sessionStorage.setItem("type", that.ruleForm.type);
+                  sessionStorage.setItem("name", name);
+                  sessionStorage.setItem("sid", resp.data.sid);
 
                   that.$message({
                     showClose: true,
@@ -174,26 +241,26 @@ export default {
                     type: 'success'
                   });
 
-                  console.log('正在跳转：' + '/' + that.ruleForm.type)
-
-                  // 3. 路由跳转
+                  // 跳转到学生页面
                   that.$router.push({
-                    path: '/' + that.ruleForm.type,
+                    path: '/student',
                     query: {}
-                  })
-                })
-              }
-              else {
+                  });
+                });
+              } else {
+                // 登录失败后的逻辑...
                 that.$message({
                   showClose: true,
                   message: '账号密码错误，请联系管理员',
                   type: 'error'
                 });
               }
-            })
-          }
-          else {
-            console.log("! error type")
+            }).catch(function (error) {
+              console.error("学生登陆验证错误：" + error);
+              // 处理登录验证错误的逻辑...
+            });
+          } else {
+            console.log("! error type");
           }
         } else {
           console.log('error submit!!');
@@ -201,6 +268,7 @@ export default {
         }
       });
     },
+
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -227,5 +295,39 @@ export default {
   background-color: #B3C0D1;
   color: #333;
   line-height: 60px;
+}
+
+.el-row {
+  margin-bottom: 20px;
+}
+
+.el-row:last-child {
+  margin-bottom: 0;
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #99a9bf;
+}
+
+.bg-purple {
+  background: #d3dce6;
+}
+
+.bg-purple-light {
+  background: #e5e9f2;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 </style>
