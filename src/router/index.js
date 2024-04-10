@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import login from '../views/login/index';
+import register from '../views/register/register';
 import admin from '../views/Admin/index';
 import adminHome from '../views/Admin/home';
 import studentManage from '../views/Admin/studentManage/index'
@@ -54,6 +55,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: login
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: register
   },
   {
     // admin 的路由

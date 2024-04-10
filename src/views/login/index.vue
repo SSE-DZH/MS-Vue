@@ -31,12 +31,6 @@
                 </el-radio-group>
               </el-form-item>
 
-              <!-- <div>
-                <el-input v-model="input" placeholder="请输入内容"></el-input>
-                <span @click="refreshCode" style="cursor: pointer;">
-                <s-identify :identifyCode="identifyCode"></s-identify>
-                </span>
-              </div> -->
 
               <el-row :gutter="20" style="display: flex; justify-content: center;">
                 <el-col :span="8">
@@ -50,13 +44,9 @@
                 </el-col>
               </el-row>
 
-
-
-
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
-                <el-button @click="test('ruleForm')">test</el-button>
+                <el-button @click="register">注册</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -229,10 +219,14 @@ export default {
                 axios.get("http://localhost:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data);
                   let name = resp.data.sname;
+                  let email = resp.data.email;
+                  let phone = resp.data.phone;
 
                   sessionStorage.setItem("token", 'true');
                   sessionStorage.setItem("type", that.ruleForm.type);
                   sessionStorage.setItem("name", name);
+                  sessionStorage.setItem("email", email);
+                  sessionStorage.setItem("phone", phone);
                   sessionStorage.setItem("sid", resp.data.sid);
 
                   that.$message({
@@ -269,11 +263,15 @@ export default {
       });
     },
 
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    test(forName) {
-      console.log(this.ruleForm)
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
+    // test(forName) {
+    //   console.log(this.ruleForm)
+    // }
+    register() {
+      // 跳转到注册页面
+      this.$router.push('/register');
     }
   }
 }
