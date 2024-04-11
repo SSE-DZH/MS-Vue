@@ -4,7 +4,7 @@
       <el-main>
         <h1>student home</h1>
         <info-card></info-card>
-        <el-card style="width: 100%; margin-top: 10px">
+        <el-card style="margin-top: 10px">
           <p><i class="el-icon-s-home" style="margin-right: 18px"></i>项目名：学生管理系统</p>
           <p><i class="el-icon-s-custom" style="margin-right: 18px"></i>作者：zhiend</p>
           <p><i class="el-icon-location-outline" style="margin-right: 18px"></i>ZZU</p>

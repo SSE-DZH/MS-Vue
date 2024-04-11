@@ -2,13 +2,13 @@
   <div>
     <el-container>
       <el-header>
-        <div style="text-align: center; font-size: 25px; font-weight: bolder">
+        <div style="text-align: center; font-size: 25px; font-weight: bolder" >
           <i class="el-icon-s-home" style="margin-right: 25px"></i>
           学生管理系统
         </div>
       </el-header>
-      <el-main>
-        <el-card class="login-module">
+      <el-main style="background: linear-gradient(to bottom, #FDEBD0, #D6EAF8);">
+        <el-card class="login-module" style="background: linear-gradient(to bottom, #FDEBD0, #D6EAF8);">
           <div slot="header" class="clearfix">
             <span style="text-align: center; font-size: 20px; font-family: 'Microsoft YaHei'">
               <p><i class="el-icon-office-building" style="margin-right: 18px"></i>登陆</p>
@@ -34,7 +34,7 @@
 
               <el-row :gutter="20" style="display: flex; justify-content: center;">
                 <el-col :span="8">
-                  <div style="width: 50px;"></div> <!-- 添加一个空的 div，宽度为 50px -->
+                  <div style="width: 70px;"></div> <!-- 添加一个空的 div，宽度为 50px -->
                   <el-input v-model="input" placeholder="请输入验证码"></el-input>
                 </el-col>
                 <el-col :span="6">
@@ -44,14 +44,48 @@
                 </el-col>
               </el-row>
 
+
+
+              <el-row :gutter="0">
+                <el-col :span="12">
+                  <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm')" style="width: 100%">登陆</el-button>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item>
+                    <el-button @click="register" style="width: 100%">注册</el-button>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+
+
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
-                <el-button @click="register">注册</el-button>
+                <!-- 使用 flex 布局将按钮靠右 -->
+                <div style="display: flex; justify-content: flex-end;">
+                  <el-button type="text" @click="showForgetPasswordDialog">忘记密码？</el-button>
+                </div>
               </el-form-item>
             </el-form>
           </div>
         </el-card>
       </el-main>
+      <!-- 忘记密码对话框 -->
+      <el-dialog title="找回密码" :visible.sync="forgetPasswordDialogVisible" width="30%" style="background: linear-gradient(to bottom, #FDEBD0, #D6EAF8);">
+        <div class="send-code-info">
+          <span>向 {{ ruleForm.email }} 发送验证码</span>
+        </div>
+        <div class="verification-code">
+          <el-input v-model="verificationCode" placeholder="请输入验证码"></el-input>
+          <el-button :disabled="countdown > 0" @click="sendVerificationCode">{{ countdown > 0 ? countdown + 's后重新发送' :
+              '发送验证码' }}</el-button>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="closeForgetPasswordDialog">取消</el-button>
+          <el-button type="primary" @click="confirmForgetPassword">确定</el-button>
+        </span>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -86,7 +120,10 @@ export default {
         type: [
           { required: true, message: '请选择', trigger: 'change' }
         ],
-      }
+      },
+      forgetPasswordDialogVisible: false, // 控制忘记密码对话框显示与隐藏
+      verificationCode: '', // 验证码
+      countdown: 0 // 倒计时
     };
   },
   computed: {
@@ -263,15 +300,38 @@ export default {
       });
     },
 
-    // resetForm(formName) {
-    //   this.$refs[formName].resetFields();
-    // },
-    // test(forName) {
-    //   console.log(this.ruleForm)
-    // }
     register() {
       // 跳转到注册页面
       this.$router.push('/register');
+    },
+    // 显示忘记密码对话框
+    showForgetPasswordDialog() {
+      this.forgetPasswordDialogVisible = true;
+    },
+    // 关闭忘记密码对话框
+    closeForgetPasswordDialog() {
+      this.forgetPasswordDialogVisible = false;
+    },
+    // 发送验证码
+    sendVerificationCode() {
+      // 发送验证码逻辑，这里只是示例，需要根据实际情况实现
+      // 设置倒计时为60秒
+      this.countdown = 60;
+      // 倒计时逻辑
+      const timer = setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+        } else {
+          clearInterval(timer);
+        }
+      }, 1000);
+    },
+    // 确认找回密码
+    confirmForgetPassword() {
+      // 确认找回密码逻辑，根据验证码进行密码重置等操作
+      // 这里可以添加验证验证码的逻辑
+      // 关闭忘记密码对话框
+      this.closeForgetPasswordDialog();
     }
   }
 }
@@ -287,6 +347,16 @@ export default {
   right: 500px;
   text-align: center;
   width: 30%;
+}
+
+/* 定义 CSS 变量 */
+:root {
+  --main-color: #3498db;
+  --secondary-color: #f0f0f0;
+  --text-color: #333;
+  --input-bg-color: #f7f7f7;
+  --input-border-color: #ddd;
+  --input-focus-border-color: var(--main-color);
 }
 
 .el-header {
@@ -327,5 +397,14 @@ export default {
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+
+.send-code-info {
+  margin-bottom: 20px; /* 调整与下面一行的间距 */
+}
+
+.verification-code {
+  display: flex;
+  justify-content: space-between; /* 靠右对齐 */
 }
 </style>

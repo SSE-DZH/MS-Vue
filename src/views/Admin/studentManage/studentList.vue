@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-table
+    <el-table 
         :data="tableData"
         border
-        style="width: 100%">
+        style="width: 100%;">
       <el-table-column
           fixed
           prop="sid"

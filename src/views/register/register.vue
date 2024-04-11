@@ -7,8 +7,8 @@
           学生管理系统
         </div>
       </el-header>
-      <el-main class="custom-main">
-        <el-card class="login-module">
+      <el-main>
+        <el-card class="login-module" style="background: linear-gradient(to bottom, #FDEBD0, #D6EAF8);">
           <div slot="header" class="clearfix">
             <span style="text-align: center; font-size: 20px; font-family: 'Microsoft YaHei'">
               <p><i class="el-icon-office-building" style="margin-right: 18px"></i>注册</p>

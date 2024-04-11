@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-main>
-      <el-card>
+      <el-car>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="ruleForm.name" :value="ruleForm.name"></el-input>
@@ -29,7 +29,7 @@
             </div>
           </el-form-item>
         </el-form>
-      </el-card>
+      </el-car>
     </el-main>
     <!-- 忘记密码对话框 -->
     <el-dialog title="找回密码" :visible.sync="forgetPasswordDialogVisible" width="30%">
