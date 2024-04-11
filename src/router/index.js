@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import login from '../views/login/index';
 import register from '../views/register/register';
+import resetPassword from '../views/resetpassword/reset-password.vue';
 import admin from '../views/Admin/index';
 import adminHome from '../views/Admin/home';
 import studentManage from '../views/Admin/studentManage/index'
@@ -60,6 +61,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: register
+  },
+  {
+    path: '/resetPassword',
+    name: 'resetPassword',
+    component: resetPassword
   },
   {
     // admin 的路由
