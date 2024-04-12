@@ -258,7 +258,7 @@ const routes = [
             name: '编辑教师信息',
             component: updateInfo,
             meta: {requireAuth: true}
-          }
+          },
         ]
       },
       {
@@ -335,7 +335,7 @@ const routes = [
             name: '编辑学生信息',
             component: updateInfo,
             meta: {requireAuth: true}
-          }
+          },      
         ]
       },
       {
