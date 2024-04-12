@@ -188,6 +188,7 @@ export default {
                   let name = resp.data.tname;
                   let email = resp.data.email;
                   let phone = resp.data.phone;
+                  let avatar = resp.data.avatar;
 
                   sessionStorage.setItem("token", 'true');
                   sessionStorage.setItem("type", that.ruleForm.type);
@@ -195,6 +196,7 @@ export default {
                   sessionStorage.setItem("email", email);
                   sessionStorage.setItem("phone", phone);
                   sessionStorage.setItem("tid", resp.data.tid);
+                  sessionStorage.setItem("avatar", avatar);
 
                   if (that.ruleForm.type === 'admin' && name === 'admin') {
                     that.$message({
@@ -242,6 +244,7 @@ export default {
                   let name = resp.data.sname;
                   let email = resp.data.email;
                   let phone = resp.data.phone;
+                  let avatar = resp.data.avatar;
 
                   sessionStorage.setItem("token", 'true');
                   sessionStorage.setItem("type", that.ruleForm.type);
@@ -249,6 +252,7 @@ export default {
                   sessionStorage.setItem("email", email);
                   sessionStorage.setItem("phone", phone);
                   sessionStorage.setItem("sid", resp.data.sid);
+                  sessionStorage.setItem("avatar", avatar);
 
                   that.$message({
                     showClose: true,
