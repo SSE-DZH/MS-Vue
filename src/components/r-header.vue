@@ -53,6 +53,7 @@ export default {
         axios.post("http://localhost:10086/common/upload", formData)
           .then(response => {
             const avatarUrl = response.data.data;
+            console.log("上传成功，头像地址为：", avatarUrl);
             // 更新头像地址
             this.avatar = avatarUrl;
             // 存储新头像地址到sessionStorage
