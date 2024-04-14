@@ -16,6 +16,9 @@
           </div>
           <div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="用户号" prop="userNumber">
+                <el-input v-model="ruleForm.userNumber" prefix-icon="el-icon-user"></el-input>
+              </el-form-item>
               <el-form-item label="用户名" prop="username">
                 <el-input v-model="ruleForm.username" prefix-icon="el-icon-user"></el-input>
               </el-form-item>
@@ -87,6 +90,7 @@ export default {
       identifyCodes: '3456789ABCDEFGHGKMNPQRSTUVWXY',
       ruleForm: {
         identifyCode: '',// 输入框中的验证码
+        userNumber: null,
         username: null, // 修改
         password: null,
         email: null,
@@ -94,6 +98,9 @@ export default {
         type: null,
       },
       rules: {
+        userNumber: [
+          { required: true, message: '请输入用户号', trigger: 'blur' },
+        ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
         ],

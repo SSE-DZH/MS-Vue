@@ -120,7 +120,7 @@ export default {
           for (let i = 0; i < that.tmpList.length; i++) {
             that.avg += parseFloat(that.tmpList[i].grade); // 将分数转换为浮点数类型
           }
-          that.avg = (that.avg / total).toFixed(6); // 将结果保留6位小数
+          that.avg = (that.avg / that.total).toFixed(6); // 将结果保留6位小数
           console.log('avg', that.avg)
         })
       },
