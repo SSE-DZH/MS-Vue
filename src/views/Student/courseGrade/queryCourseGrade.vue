@@ -108,7 +108,7 @@ export default {
           if (totalScore === 0)
             that.avg = 0
           else
-            that.avg /= totalScore
+          that.avg = (that.avg / totalScore).toFixed(6); 
         })
       },
       immediate: true

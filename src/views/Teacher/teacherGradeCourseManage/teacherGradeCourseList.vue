@@ -106,6 +106,7 @@ export default {
         that.tmpList = null
         that.total = null
         that.tableData = null
+        that.avg = 0 // 重置平均成绩
         axios.post("http://localhost:10086/SCT/findBySearch", newRuleForm).then(function (resp) {
           console.log("查询结果:");
           console.log(resp)
@@ -117,9 +118,9 @@ export default {
           that.tableData = that.tmpList.slice(start, ans)
 
           for (let i = 0; i < that.tmpList.length; i++) {
-            that.avg += that.tmpList[i].grade
+            that.avg += parseFloat(that.tmpList[i].grade); // 将分数转换为浮点数类型
           }
-          that.avg /= that.total
+          that.avg = (that.avg / total).toFixed(6); // 将结果保留6位小数
           console.log('avg', that.avg)
         })
       },

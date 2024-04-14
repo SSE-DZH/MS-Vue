@@ -3,7 +3,8 @@
     <el-container>
       <el-main>
         <el-card>
-          <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+          <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px"
+            class="demo-ruleForm">
             <el-form-item label="学号" prop="sid">
               <el-input v-model.number="ruleForm.sid"></el-input>
             </el-form-item>
@@ -22,6 +23,17 @@
             </el-form-item>
             <el-form-item label="模糊查询" prop="cFuzzy">
               <el-switch v-model="ruleForm.cFuzzy"></el-switch>
+            </el-form-item>
+            <br>
+            <!-- 添加分类选择界面 -->
+            <el-form-item label="分类查询">
+              <el-radio-group v-model="ruleForm.classification">
+                <el-radio label="不及格">不及格（ < 60 ）</el-radio>
+                    <el-radio label="及格">及格（ 60 - 69 ）</el-radio>
+                    <el-radio label="良好">良（ 70 - 79 ）</el-radio>
+                    <el-radio label="中好">中（ 80 - 89 ）</el-radio>
+                    <el-radio label="优秀">优秀（ >= 90 ）</el-radio>
+              </el-radio-group>
             </el-form-item>
             <br>
             <el-form-item label="成绩下限" prop="lowBound">
@@ -51,7 +63,7 @@
 import GradeCourseList from "@/views/Admin/gradeCourseManage/gradeCourseList";
 import TeacherGradeCourseList from "@/views/Teacher/teacherGradeCourseManage/teacherGradeCourseList";
 export default {
-  components: {TeacherGradeCourseList, GradeCourseList},
+  components: { TeacherGradeCourseList, GradeCourseList },
   data() {
     return {
       termList: null,
@@ -67,6 +79,7 @@ export default {
         cFuzzy: true,
         lowBound: null,
         highBound: null,
+        classification: '', // 添加 classification 属性
         term: sessionStorage.getItem('currentTerm')
       },
       rules: {
@@ -99,6 +112,8 @@ export default {
   methods: {
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      // 重置分类选择
+      this.ruleForm.classification = ''; // 或者设置为默认值
     }
   }
 }

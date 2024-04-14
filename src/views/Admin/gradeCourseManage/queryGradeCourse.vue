@@ -121,6 +121,8 @@ export default {
   methods: {
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      // 重置分类选择
+      this.ruleForm.classification = ''; // 或者设置为默认值
     }
   }
 }
