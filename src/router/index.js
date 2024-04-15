@@ -221,6 +221,12 @@ const routes = [
             name: '编辑',
             component: editorGradeCourse,
             meta: {requireAuth: true}
+          },
+          {
+            path: '/dataStatistics',
+            name: '数据统计',
+            component: () => import('@/views/datastatistic/statistic.vue'), // 引入数据统计界面
+            meta: { requireAuth: true }
           }
         ]
       }
