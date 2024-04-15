@@ -1,60 +1,27 @@
 <template>
   <div>
-    <el-table
-        :data="tableData"
-        border
-        stripe
-        style="width: 100%">
-      <el-table-column
-          fixed
-          prop="cid"
-          label="课程号"
-          width="150">
+    <el-table :data="tableData" border stripe style="width: 100%">
+      <el-table-column fixed prop="cid" label="课程号" width="150">
       </el-table-column>
-      <el-table-column
-          prop="cname"
-          label="课程名"
-          width="150">
+      <el-table-column prop="cname" label="课程名" width="150">
       </el-table-column>
-      <el-table-column
-          prop="ccredit"
-          label="学分"
-          width="150">
+      <el-table-column prop="ccredit" label="学分" width="150">
       </el-table-column>
-      <el-table-column
-          prop="location"
-          label="地点"
-          width="150">
+      <el-table-column prop="location" label="地点" width="150">
       </el-table-column>
-      <el-table-column
-          prop="schedule"
-          label="时间表"
-          width="150">
+      <el-table-column prop="schedule" label="时间表" width="150">
       </el-table-column>
-      <el-table-column
-          label="操作"
-          width="100">
+      <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-popconfirm
-              confirm-button-text='选择'
-              cancel-button-text='取消'
-              icon="el-icon-info"
-              icon-color="red"
-              title="确定开设？"
-              @confirm="offer(scope.row)"
-          >
+          <el-popconfirm confirm-button-text='选择' cancel-button-text='取消' icon="el-icon-info" icon-color="red"
+            title="确定开设？" @confirm="offer(scope.row)">
             <el-button slot="reference" type="text" size="small">开设</el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        :page-size="pageSize"
-        @current-change="changePage"
-    >
+    <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+      @current-change="changePage">
     </el-pagination>
   </div>
 </template>
@@ -86,31 +53,32 @@ export default {
       })
     },
     offer(row) {
-      const tid = sessionStorage.getItem("tid")
-      const cid = row.cid
-      const term = sessionStorage.getItem("currentTerm")
+      const tid = sessionStorage.getItem("tid");
+      const cid = row.cid;
+      const term = sessionStorage.getItem("currentTerm");
+      const location = row.location; // 获取地点
+      const ccredit = row.ccredit; // 获取学分
+      const schedule = row.schedule; // 获取时间表
 
-      const that = this
-      axios.get('http://localhost:10086/courseTeacher/insert/' + cid + '/' + tid + '/' + term).then(function (resp) {
+      const that = this;
+      axios.get('http://localhost:10086/courseTeacher/insert/' + cid + '/' + tid + '/' + term + '/' + location + '/' + schedule).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
             message: '开设成功',
             type: 'success'
           });
-          window.location.reload()
-        }
-        else {
+          window.location.reload();
+        } else {
           that.$message({
             showClose: true,
             message: '开设失败，请联系管理员',
             type: 'error'
           });
         }
-      })
-
-
+      });
     },
+
     changePage(page) {
       page = page - 1
       const that = this

@@ -100,6 +100,7 @@ export default {
       rules: {
         userNumber: [
           { required: true, message: '请输入用户号', trigger: 'blur' },
+          { pattern: /^\d{10}$/, message: '请输入10位数字作为用户号', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
