@@ -225,7 +225,7 @@ const routes = [
           {
             path: '/dataStatistics',
             name: '数据统计',
-            component: () => import('@/views/datastatistic/statistic.vue'), // 引入数据统计界面
+            component: () => import('@/views/Admin/datastatistic/statistic.vue'), // 引入数据统计界面
             meta: { requireAuth: true }
           }
         ]
@@ -304,6 +304,12 @@ const routes = [
             name: '编辑成绩',
             component: teacherEditorGradeCourse,
             meta: {requireAuth: true}
+          },
+          {
+            path: '/teacherdataStatistics',
+            name: '数据统计',
+            component: () => import('@/views/Teacher/datastatistic/statistic.vue'), // 引入数据统计界面
+            meta: { requireAuth: true }
           }
         ]
       }
@@ -376,6 +382,12 @@ const routes = [
             component: queryCourseGrade,
             meta: {requireAuth: true}
           },
+          {
+            path: '/studentdataStatistics',
+            name: '数据统计',
+            component: () => import('@/views/Student/datastatistic/statistic.vue'), // 引入数据统计界面
+            meta: { requireAuth: true }
+          }
         ]
       }
     ]
