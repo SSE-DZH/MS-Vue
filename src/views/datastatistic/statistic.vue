@@ -179,6 +179,11 @@ export default {
     exportData() {
       if (!this.selectedCourse) {
         console.error('请选择课程');
+        this.$message({
+              showClose: true,
+              message: '请选择课程',
+              type: 'error'
+            });
         return;
       }
       const term = '24-春季学期'; // 这里设置学期，你可以根据实际情况修改
