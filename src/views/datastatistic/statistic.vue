@@ -177,12 +177,25 @@ export default {
 
     // 数据导出
     exportData() {
+      if (!this.selectedCourse) {
+        console.error('请选择课程');
+        return;
+      }
+      const term = '24-春季学期'; // 这里设置学期，你可以根据实际情况修改
       // 发送请求导出数据
-      // 此处示例请求地址为 /{cid}/download，具体根据后端实际情况修改
-      this.$axios.get(`http://localhost:10086/${this.selectedCourse}/download`)
+      // 根据实际情况修改请求地址和参数传递方式
+      this.$axios.get(`http://localhost:10086/SCT/export/${this.selectedCourse}/${term}`, { responseType: 'blob' })
         .then(response => {
-          // 下载文件
-          // 示例代码，具体根据后端返回的数据处理
+          // 创建blob对象
+          const blob = new Blob([response.data]);
+          // 创建a标签
+          const downloadLink = document.createElement('a');
+          // 设置a标签的href为blob对象的URL
+          downloadLink.href = window.URL.createObjectURL(blob);
+          // 设置文件下载的名称
+          downloadLink.download = `${this.selectedCourse}-${term}-成绩报表.xlsx`;
+          // 将a标签点击事件触发下载
+          downloadLink.click();
         })
         .catch(error => {
           console.error('Error exporting data:', error);
