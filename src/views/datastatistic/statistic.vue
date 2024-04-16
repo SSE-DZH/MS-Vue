@@ -13,9 +13,9 @@
     </el-select>
 
     <!-- 报表统计图表容器 -->
-    <div v-if="selectedCourse !== null">
+    <div>
       <!-- 添加图表初始化条件 -->
-      <div v-if="chart" ref="chartContainer" style="width: 800px; height: 600px;"></div>
+      <div id="main" style="width: 800px; height: 600px;"></div>
     </div>
   </div>
 </template>
@@ -33,33 +33,36 @@ export default {
     };
   },
   mounted() {
-    // 获取课程列表
+    // 获取课程列表并初始化图表
     this.getCourses();
   },
+
   methods: {
     // 获取课程列表
-    getCourses() {
-      // 发送请求获取课程列表
-      // 请求地址为 /course/findAllCname
-      this.$axios.get('http://localhost:10086/course/findAllCname')
-        .then(response => {
-          this.courses = response.data;
-          // 初始化图表
+    async getCourses() {
+      try {
+        const response = await this.$axios.get('http://localhost:10086/course/findAllCname');
+        this.courses = response.data;
+        // 在下一次 DOM 更新周期执行初始化
+        this.$nextTick(() => {
           this.initChart();
-        })
-        .catch(error => {
-          console.error('Error fetching courses:', error);
         });
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
     },
     // 初始化图表
     initChart() {
-      // 确保图表容器存在
-      if (!this.$refs.chartContainer) {
-        console.error("图表容器不存在");
+      // 在 DOM 中查找图表容器
+      const chartContainer = document.getElementById('main');
+      // 如果找不到图表容器，则不执行初始化
+      if (!chartContainer) {
+        console.error('Chart container not found');
         return;
       }
+      // 初始化图表
+      this.chart = echarts.init(chartContainer);
 
-      this.chart = echarts.init(this.$refs.chartContainer);
       // 初始化图表配置项
       const option = {
         xAxis: {
@@ -69,7 +72,7 @@ export default {
         series: [
           {
             type: 'bar',
-            data: [1, 2, 3, 4, 5],
+            data: [0, 0, 0, 0, 0],
             itemStyle: {
               barBorderRadius: 5,
               borderWidth: 1,
@@ -124,9 +127,35 @@ export default {
           {
             type: 'bar',
             data: [
-              scores.lessThan60,
-              scores.sixtyTo69,
-              scores.seventyTo79,
+              {
+                value: scores.lessThan60,
+                // 设置单个柱子的样式，此处改为浅红色
+                itemStyle: {
+                  color: '#FF0000', // 红色
+                  shadowColor: '#FF0000',
+                  borderType: 'dashed',
+                  opacity: 0.5
+                }
+              },
+              // scores.sixtyTo69,
+              {
+                value: scores.sixtyTo69,
+                itemStyle: {
+                  color: '#FFC0CB', // 粉色
+                  shadowColor: '#FFC0CB',
+                  borderType: 'dashed',
+                  opacity: 0.5
+                }
+              },
+              {
+                value: scores.seventyTo79,
+                itemStyle: {
+                  color: '#FFFF00', // 黄色
+                  shadowColor: '#FFFF00',
+                  borderType: 'dashed',
+                  opacity: 0.5
+                }
+              },
               {
                 value: scores.eightyTo89,
                 // 设置单个柱子的样式

@@ -45,7 +45,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    // 随便定义的首页
+    // 定义的首页
     path: '/',
     name: 'index',
     component: login,
