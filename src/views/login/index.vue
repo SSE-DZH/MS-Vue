@@ -23,8 +23,8 @@
                 <el-input v-model="ruleForm.username" prefix-icon="el-icon-user"></el-input>
               </el-form-item>
               <el-form-item label="用户密码" prop="password">
-                <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password
-                  prefix-icon="el-icon-lock"></el-input>
+                <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password prefix-icon="el-icon-lock"
+                  @keyup.enter="submitForm('ruleForm')"></el-input>
               </el-form-item>
               <el-form-item label="用户类型" prop="type">
                 <el-radio-group v-model="ruleForm.type">
@@ -38,7 +38,7 @@
               <el-row :gutter="20" style="display: flex; justify-content: center;">
                 <el-col :span="8">
                   <div style="width: 70px;"></div> <!-- 添加一个空的 div，宽度为 50px -->
-                  <el-input v-model="input" placeholder="请输入验证码"></el-input>
+                  <el-input v-model="input" placeholder="请输入验证码" @keyup.enter="submitForm('ruleForm')"></el-input>
                 </el-col>
                 <el-col :span="6">
                   <span @click="refreshCode" style="cursor: pointer;">
@@ -120,7 +120,22 @@ export default {
       return this.input === this.identifyCode;
     }
   },
+  mounted() {
+    // 在组件加载后添加键盘事件监听器
+    window.addEventListener('keydown', this.handleKeyDown);
+  },
+  beforeDestroy() {
+    // 在组件销毁前移除键盘事件监听器，以避免内存泄漏
+    window.removeEventListener('keydown', this.handleKeyDown);
+  },
   methods: {
+    // 处理键盘按下事件
+    handleKeyDown(event) {
+      // 如果按下的是 Enter 键（keyCode 为 13），则调用提交表单方法
+      if (event.keyCode === 13) {
+        this.submitForm('ruleForm');
+      }
+    },
     goToUpdatePassword() {
       this.$router.push('/resetPassword');
     },

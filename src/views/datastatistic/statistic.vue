@@ -8,8 +8,12 @@
 
     <!-- 下拉框选择课程 -->
     <el-select v-model="selectedCourse" placeholder="请选择课程" @change="getCourseScores">
-      <el-option v-for="course in courses" :key="course" :label="course" :value="course">
-      </el-option>
+      <el-option v-for="course in courses" :key="course" :label="course" :value="course"></el-option>
+    </el-select>
+
+    <!-- 下拉框选择学期 -->
+    <el-select v-model="selectedTerm" placeholder="请选择学期" @change="getCourseScores">
+      <el-option v-for="term in terms" :key="term" :label="term" :value="term"></el-option>
     </el-select>
 
     <!-- 报表统计图表容器 -->
@@ -28,15 +32,18 @@ export default {
     return {
       courses: [], // 存放课程列表
       selectedCourse: null, // 选择的课程
+      selectedTerm: null, // 选择的学期
       chart: null, // ECharts 实例
-      courseScores: {} // 存放课程成绩分布数据
+      courseScores: {}, // 存放课程成绩分布数据
+      terms: [], // 存放所有学期列表
     };
   },
   mounted() {
     // 获取课程列表并初始化图表
     this.getCourses();
+    // 获取所有学期列表
+    this.findAllTerm();
   },
-
   methods: {
     // 获取课程列表
     async getCourses() {
@@ -49,6 +56,15 @@ export default {
         });
       } catch (error) {
         console.error('Error fetching courses:', error);
+      }
+    },
+    // 获取所有学期列表
+    async findAllTerm() {
+      try {
+        const response = await this.$axios.get('http://localhost:10086/SCT/findAllTerm');
+        this.terms = response.data;
+      } catch (error) {
+        console.error('Error fetching terms:', error);
       }
     },
     // 初始化图表
@@ -89,14 +105,13 @@ export default {
     },
     // 获取课程成绩分布数据
     getCourseScores() {
-      if (!this.selectedCourse) {
-        console.error('请选择课程');
+      if (!this.selectedCourse || !this.selectedTerm) {
+        console.error('请选择课程和学期');
         return;
       }
-      const term = '24-春季学期'; // 这里设置学期，你可以根据实际情况修改
       // 发送请求获取课程成绩分布数据
       // 注意修改请求地址和参数传递方式
-      this.$axios.post(`http://localhost:10086/SCT/findByCname/${this.selectedCourse}/${term}`)
+      this.$axios.post(`http://localhost:10086/SCT/findByCname/${this.selectedCourse}/${this.selectedTerm}`)
         .then(response => {
           // 检查返回数据是否为空
           if (!response.data || Object.keys(response.data).length === 0) {
@@ -111,7 +126,6 @@ export default {
           console.error('Error fetching course scores:', error);
         });
     },
-
     // 更新图表数据
     updateChart() {
       // 获取课程分数数据
@@ -177,19 +191,18 @@ export default {
 
     // 数据导出
     exportData() {
-      if (!this.selectedCourse) {
-        console.error('请选择课程');
+      if (!this.selectedCourse || !this.selectedTerm) {
+        console.error('请选择课程和学期');
         this.$message({
-              showClose: true,
-              message: '请选择课程',
-              type: 'error'
-            });
+          showClose: true,
+          message: '请选择课程和学期',
+          type: 'error'
+        });
         return;
       }
-      const term = '24-春季学期'; // 这里设置学期，你可以根据实际情况修改
       // 发送请求导出数据
       // 根据实际情况修改请求地址和参数传递方式
-      this.$axios.get(`http://localhost:10086/SCT/export/${this.selectedCourse}/${term}`, { responseType: 'blob' })
+      this.$axios.get(`http://localhost:10086/SCT/export/${this.selectedCourse}/${this.selectedTerm}`, { responseType: 'blob' })
         .then(response => {
           // 创建blob对象
           const blob = new Blob([response.data]);
@@ -198,7 +211,7 @@ export default {
           // 设置a标签的href为blob对象的URL
           downloadLink.href = window.URL.createObjectURL(blob);
           // 设置文件下载的名称
-          downloadLink.download = `${this.selectedCourse}-${term}-成绩报表.xlsx`;
+          downloadLink.download = `${this.selectedCourse}-${this.selectedTerm}-成绩报表.xlsx`;
           // 将a标签点击事件触发下载
           downloadLink.click();
         })
