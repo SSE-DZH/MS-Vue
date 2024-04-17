@@ -259,8 +259,8 @@ export default {
             let form = { username: that.ruleForm.username, password: that.ruleForm.password };
             axios.post("http://localhost:10086/student/login", form).then(function (resp) {
               console.log("学生登陆验证信息：" + resp.data);
-              let check = resp.data;
-              if (check === true) {
+              let check = resp.data.code;
+              if (check === 1) {
                 // 登录成功后的逻辑...
                 axios.get("http://localhost:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data);
