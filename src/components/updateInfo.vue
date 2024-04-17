@@ -22,29 +22,9 @@
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
           </el-form-item>
-          <!-- <el-form-item>
-            <div style="display: flex; justify-content: flex-end;">
-              <el-button type="text" @click="showForgetPasswordDialog">忘记密码？</el-button>
-            </div>
-          </el-form-item> -->
         </el-form>
       </el-car>
     </el-main>
-    <!-- 忘记密码对话框 -->
-    <el-dialog title="找回密码" :visible.sync="forgetPasswordDialogVisible" width="30%">
-      <div class="send-code-info">
-        <span>向 {{ ruleForm.email }} 发送验证码</span>
-      </div>
-      <div class="verification-code">
-        <el-input v-model="verificationCode" placeholder="请输入验证码"></el-input>
-        <el-button :disabled="countdown > 0" @click="sendVerificationCode">{{ countdown > 0 ? countdown + 's后重新发送' :
-          '发送验证码' }}</el-button>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="closeForgetPasswordDialog">取消</el-button>
-        <el-button type="primary" @click="confirmForgetPassword">确定</el-button>
-      </span>
-    </el-dialog>
   </el-container>
 </template>
 
@@ -79,12 +59,6 @@ export default {
           { pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
         ]
       },
-      forgetPasswordDialogVisible: false, // 控制忘记密码对话框显示与隐藏
-      countdown: 0,// 倒计时
-      verificationCodeDto: {
-        email: sessionStorage.getItem('email'), // 获取登录时存储的邮箱
-        verificationCode: '' // 验证码
-      }
     };
   },
   methods: {
@@ -146,85 +120,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 显示忘记密码对话框
-    showForgetPasswordDialog() {
-      this.forgetPasswordDialogVisible = true;
-    },
-    // 关闭忘记密码对话框
-    closeForgetPasswordDialog() {
-      this.forgetPasswordDialogVisible = false;
-    },
-    // 发送验证码
-    sendVerificationCode() {
-      // 发送验证码逻辑，这里只是示例，需要根据实际情况实现
-      // 设置倒计时为60秒
-      this.countdown = 60;
-      // 倒计时逻辑
-      const timer = setInterval(() => {
-        if (this.countdown > 0) {
-          this.countdown--;
-        } else {
-          clearInterval(timer);
-        }
-      }, 1000);
-
-      // 根据用户类型发送验证码
-      const type = sessionStorage.getItem('type');
-      const apiUrl = type === 'student' ? 'http://localhost:10086/student/sendEmailCode' :
-        'http://localhost:10086/teacher/sendEmailCode';
-      axios.post(apiUrl, { email: this.verificationCodeDto.email })
-        .then(response => {
-          // 判断后端返回的结果
-          if (response.data.code === 1) {
-            // 发送验证码成功，显示成功消息给用户
-            this.$message({
-              showClose: true,
-              message: "发送验证码成功",
-              type: 'success'
-            });
-            // 发送成功后提交表单
-            this.submitForm('ruleForm');
-          } else {
-            // 发送验证码失败，显示失败消息给用户
-            this.$message({
-              showClose: true,
-              message: response.data.msg,
-              type: 'error'
-            });
-          }
-        })
-        .catch(error => {
-          // 处理发送验证码失败的逻辑
-          console.error('发送验证码失败：', error);
-          // 可以在这里添加错误提示信息
-        });
-    },
-    // 确认找回密码
-    confirmForgetPassword() {
-      // 验证验证码
-      const type = sessionStorage.getItem('type');
-      const apiUrl = type === 'student' ? 'http://localhost:10086/student/checkCode' :
-        'http://localhost:10086/teacher/checkCode';
-      axios.post(apiUrl, this.verificationCodeDto)
-        .then(response => {
-          // 处理验证码验证成功的逻辑
-          // 根据后端返回的结果来判断是否跳转到修改密码界面
-          const result = response.data.code;
-          if (result === 1) {
-            // 验证码正确，跳转到修改密码界面
-            this.$router.push('/resetPassword');
-          } else {
-            // 验证码错误，可以在这里添加相应的提示信息
-            this.$message.error('验证码错误，请重新输入');
-          }
-        })
-        .catch(error => {
-          // 处理请求错误的逻辑
-          console.error('验证验证码失败：', error);
-          // 可以在这里添加错误提示信息
-        });
-      this.closeForgetPasswordDialog();
-    }
   }
 };
 </script>

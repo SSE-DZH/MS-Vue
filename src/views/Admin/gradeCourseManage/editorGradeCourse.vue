@@ -17,7 +17,6 @@
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <el-button @click="test">test</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -109,9 +108,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    test() {
-      console.log(this.ruleForm)
-    }
   }
 }
 </script>
