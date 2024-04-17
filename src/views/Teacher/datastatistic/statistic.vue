@@ -182,7 +182,15 @@ export default {
                 }
               },
               scores.ninetyTo100
-            ]
+            ],
+            // 在柱状图上显示数值
+            // 在柱状图上显示数值，并将数值字体加粗改为黑色
+            label: {
+              show: true,
+              position: 'top', // 可以设置为 'top', 'insideTop', 'inside', 'insideBottom', 'bottom'
+              fontWeight: 'bold',
+              color: '#000000' // 黑色
+            }
           }
         ]
       };
