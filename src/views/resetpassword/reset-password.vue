@@ -17,6 +17,9 @@
                     <div>
                         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                             class="demo-ruleForm">
+                            <el-form-item label="用户号" prop="userNumber">
+                                <el-input v-model="ruleForm.userNumber" :value="ruleForm.userNumber"></el-input>
+                            </el-form-item>
                             <el-form-item label="姓名" prop="username">
                                 <el-input v-model="ruleForm.username" :value="ruleForm.username"></el-input>
                             </el-form-item>
@@ -66,10 +69,15 @@ export default {
                 pass: '',
                 checkPass: '',
                 username: '',
+                userNumber: null,
                 type: '',
                 verificationCode: '', // 验证码
             },
             rules: {
+                userNumber: [
+                    { required: true, message: '请输入用户号', trigger: 'blur' },
+                    { pattern: /^\d{10}$/, message: '请输入10位数字作为用户号', trigger: 'blur' }
+                ],
                 pass: [
                     { required: true, message: '请输入密码', trigger: 'blur' }
                 ],
