@@ -23,6 +23,7 @@
 
 <script>
 export default {
+  name:"addTeacher",
   data() {
     return {
       ruleForm: {

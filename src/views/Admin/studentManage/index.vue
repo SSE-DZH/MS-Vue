@@ -1,6 +1,8 @@
 <template>
   <div>
-    <router-view></router-view>
+    <keep-alive include="addStudent,studentList">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -10,6 +12,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -22,7 +22,9 @@
 </template>
 
 <script>
+import editorCourseVue from '../courseManage/editorCourse.vue';
 export default {
+  name: "editorStudent",
   data() {
     return {
       ruleForm: {

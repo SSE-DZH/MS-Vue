@@ -28,6 +28,7 @@
 import * as echarts from 'echarts';
 
 export default {
+  name: "statistic",
   data() {
     return {
       courses: [], // 存放课程列表

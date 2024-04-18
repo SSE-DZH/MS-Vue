@@ -1,5 +1,8 @@
 <template>
-  <router-view></router-view>
+  <keep-alive include="addTeacher">
+    <router-view></router-view>
+  </keep-alive>
+
 </template>
 
 <script>
@@ -8,6 +11,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,5 +1,8 @@
 <template>
-  <router-view></router-view>
+  <keep-alive include="addCourse,queryCourse">
+    <router-view></router-view>
+  </keep-alive>
+  
 </template>
 
 <script>

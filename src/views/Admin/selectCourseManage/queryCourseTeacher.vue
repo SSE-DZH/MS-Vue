@@ -38,6 +38,7 @@
 <script>
 import CourseTacherList from "@/views/Admin/selectCourseManage/CourseTacherList";
 export default {
+  name: "queryCourseTeacher",
   components: {CourseTacherList},
   data() {
     return {

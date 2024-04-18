@@ -72,6 +72,7 @@
 <script>
 import GradeCourseList from "@/views/Admin/gradeCourseManage/gradeCourseList";
 export default {
+  name: "queryGradeCourse",
   components: { GradeCourseList },
   data() {
     return {

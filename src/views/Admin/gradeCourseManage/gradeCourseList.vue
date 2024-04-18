@@ -79,6 +79,7 @@
 
 <script>
 export default {
+  name:"gradeCourseList",
   methods: {
     select(row) {
       console.log(row)

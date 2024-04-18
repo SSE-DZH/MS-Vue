@@ -22,6 +22,7 @@
 </template>
 <script>
 export default {
+  name: 'addStudent',
   data() {
     return {
       ruleForm: {

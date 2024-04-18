@@ -38,6 +38,7 @@
 <script>
 import CourseList from "@/views/Admin/courseManage/courseList";
 export default {
+  name: "queryCourse",
   components: {CourseList},
   data() {
     return {
