@@ -200,12 +200,17 @@ export default {
 
           // 表单验证通过后，进行登录逻辑
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
+            console.log("教师登录");
             let form = { username: that.ruleForm.username, password: that.ruleForm.password };
-            axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
-              console.log("教师登陆验证信息：" + resp.data);
+            this.$store.dispatch('auth/login', { apiUrl: "http://localhost:10086/teacher/login", form }).then(function (resp) {
+              console.log("教师登陆验证信息：" + JSON.stringify(resp.data));
+              console.log("仓库中的Token信息：" + that.$store.state.auth.token); // 打印仓库中的 token 信息
+              console.log(resp.data.code);
               let check = resp.data.code;
+              // sessionStorage.setItem("tokens", resp.data.token);
               if (check === 1) {
                 // 登录成功后的逻辑...
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + that.$store.state.auth.token;
                 axios.get("http://localhost:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data);
                   let name = resp.data.tname;
