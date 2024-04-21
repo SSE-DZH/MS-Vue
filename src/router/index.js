@@ -1,10 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import login from '../views/login/index';
-import register from '../views/register/register';
-import resetPassword from '../views/resetpassword/reset-password.vue';
+
 import admin from '../views/Admin/index';
-import adminHome from '../views/Admin/home';
 import studentManage from '../views/Admin/studentManage/index'
 import addStudent from "@/views/Admin/studentManage/addStudent";
 import studentList from "@/views/Admin/studentManage/studentList";
@@ -40,6 +37,11 @@ import teacherQueryGradeCourse from "@/views/Teacher/teacherGradeCourseManage/te
 import teacherGradeCourseList from "@/views/Teacher/teacherGradeCourseManage/teacherGradeCourseList";
 import teacherEditorGradeCourse from "@/views/Teacher/teacherGradeCourseManage/teacherEditorGradeCourse";
 import updateInfo from "@/components/updateInfo";
+
+const login = () => import('../views/login/index');
+const register = () => import('../views/register/register');
+const resetPassword = () => import('../views/resetpassword/reset-password.vue');
+const adminHome = () => import('../views/Admin/home');
 
 Vue.use(VueRouter)
 
