@@ -37,11 +37,13 @@ import teacherQueryGradeCourse from "@/views/Teacher/teacherGradeCourseManage/te
 import teacherGradeCourseList from "@/views/Teacher/teacherGradeCourseManage/teacherGradeCourseList";
 import teacherEditorGradeCourse from "@/views/Teacher/teacherGradeCourseManage/teacherEditorGradeCourse";
 import updateInfo from "@/components/updateInfo";
+// import AvatarUpload from '@/components/AvatarUpload';
 
 const login = () => import('../views/login/index');
 const register = () => import('../views/register/register');
 const resetPassword = () => import('../views/resetpassword/reset-password.vue');
 const adminHome = () => import('../views/Admin/home');
+const AvatarUpload = () => import('@/components/AvatarUpload');
 
 Vue.use(VueRouter)
 
@@ -88,9 +90,10 @@ const routes = [
             name: 'admin 主页',
             component: adminHome,
             meta: {requireAuth: true},
-          }
+          },
         ]
       },
+      
       {
         path: '/studentManage',
         name: '学生管理',
@@ -156,6 +159,12 @@ const routes = [
             component: editorTeacher,
             meta: {requireAuth: true}
           },
+          {
+            path: '/avatar-upload',
+            name: '上传头像',
+            component: AvatarUpload,
+            meta: {requireAuth: true}
+          }
         ]
       },
       {
@@ -229,7 +238,8 @@ const routes = [
             name: '数据统计',
             component: () => import('@/views/Admin/datastatistic/statistic.vue'), // 引入数据统计界面
             meta: { requireAuth: true }
-          }
+          },
+          
         ]
       }
     ]
@@ -267,6 +277,12 @@ const routes = [
             component: updateInfo,
             meta: {requireAuth: true}
           },
+          {
+            path: '/avatar-upload',
+            name: '上传头像',
+            component: AvatarUpload,
+            meta: {requireAuth: true}
+          }
         ]
       },
       {
@@ -349,7 +365,13 @@ const routes = [
             name: '编辑学生信息',
             component: updateInfo,
             meta: {requireAuth: true}
-          },      
+          },
+          {
+            path: '/avatar-upload',
+            name: '上传头像',
+            component: AvatarUpload,
+            meta: {requireAuth: true}
+          }      
         ]
       },
       {
