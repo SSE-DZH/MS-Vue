@@ -107,7 +107,7 @@ export default {
         that.total = null
         that.tableData = null
         that.avg = 0 // 重置平均成绩
-        axios.post("http://localhost:10086/SCT/findBySearch", newRuleForm).then(function (resp) {
+        axios.post("http://springboot_app:10086/SCT/findBySearch", newRuleForm).then(function (resp) {
           console.log("查询结果:");
           console.log(resp)
           that.tmpList = resp.data

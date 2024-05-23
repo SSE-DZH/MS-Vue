@@ -38,7 +38,7 @@ export default {
   methods: {
     async findAllTerm() {
       try {
-        const response = await this.$axios.get('http://localhost:10086/SCT/findAllTerm');
+        const response = await this.$axios.get('http://springboot_app:10086/SCT/findAllTerm');
         this.terms = response.data;
       } catch (error) {
         console.error('Error fetching terms:', error);
@@ -52,7 +52,7 @@ export default {
       // 清零先前选择学期的数据
       this.courseScores = {};
       const sid = sessionStorage.getItem('sid');
-      this.$axios.get(`http://localhost:10086/SCT/findBySid/${sid}/${this.selectedTerm}`)
+      this.$axios.get(`http://springboot_app:10086/SCT/findBySid/${sid}/${this.selectedTerm}`)
         .then(response => {
           this.courseScores = response.data;
           this.updateChart();
@@ -97,7 +97,7 @@ export default {
       }
       // 发送请求导出数据
       // 根据实际情况修改请求地址和参数传递方式
-      this.$axios.get(`http://localhost:10086/SCT/exportStudent/${sessionStorage.getItem("sid")}/${this.selectedTerm}`, { responseType: 'blob' })
+      this.$axios.get(`http://springboot_app:10086/SCT/exportStudent/${sessionStorage.getItem("sid")}/${this.selectedTerm}`, { responseType: 'blob' })
         .then(response => {
           // 创建blob对象
           const blob = new Blob([response.data]);

@@ -66,7 +66,7 @@ export default {
             });
             return
           }
-          axios.post("http://localhost:10086/teacher/addTeacher", this.ruleForm).then(function (resp) {
+          axios.post("http://springboot_app:10086/teacher/addTeacher", this.ruleForm).then(function (resp) {
             if (resp.data === true) {
               that.$message({
                 showClose: true,

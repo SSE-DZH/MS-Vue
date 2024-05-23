@@ -57,7 +57,7 @@ export default {
           // 通过前端校验
           const that = this
           console.log(this.ruleForm)
-          axios.post("http://localhost:10086/student/addStudent", this.ruleForm).then(function (resp) {
+          axios.post("http://springboot_app:10086/student/addStudent", this.ruleForm).then(function (resp) {
             if (resp.data === true) {
               that.$message({
                 showClose: true,

@@ -131,7 +131,7 @@ export default {
       const params = { email: this.registerForm.email };
       if (this.registerForm.type === 'teacher') {
         // 发送验证码给老师
-        axios.post('http://localhost:10086/teacher/sendEailCode', null, { params })
+        axios.post('http://springboot_app:10086/teacher/sendEailCode', null, { params })
           .then(response => {
             // 判断后端返回的结果
             if (response.data.code === 1) {
@@ -157,7 +157,7 @@ export default {
       } else if (this.registerForm.type === 'student') {
         console.log(this.registerForm.email);
         // 发送验证码给学生
-        axios.post('http://localhost:10086/student/sendEailCode', null, { params })
+        axios.post('http://springboot_app:10086/student/sendEailCode', null, { params })
           .then(response => {
             // 判断后端返回的结果
             if (response.data.code === 1) {
@@ -223,7 +223,7 @@ export default {
           }
 
           // 发送请求获取当前学期
-          axios.get('http://localhost:10086/info/getCurrentTerm')
+          axios.get('http://springboot_app:10086/info/getCurrentTerm')
             .then(resp => {
               // 获取到后端返回的当前学期值
               const currentTerm = resp.data;
@@ -270,7 +270,7 @@ export default {
       };
 
       // 发送注册请求给后端
-      axios.post('http://localhost:10086/teacher/register', requestData)
+      axios.post('http://springboot_app:10086/teacher/register', requestData)
         .then(response => {
           // 处理注册成功的逻辑
           if (response.data.code === 1) {
@@ -319,7 +319,7 @@ export default {
       };
 
       // 发送注册请求给后端
-      axios.post('http://localhost:10086/student/register', requestData)
+      axios.post('http://springboot_app:10086/student/register', requestData)
         .then(response => {
           if (response.data.code === 1) {
             console.log('学生注册成功:', response.data);

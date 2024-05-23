@@ -111,8 +111,8 @@ export default {
         sendVerificationCode() {
             // 根据用户类型构造获取邮箱地址的API地址
             const apiUrl = this.ruleForm.type === 'teacher' ?
-                'http://localhost:10086/teacher/findEmailByUsername' :
-                'http://localhost:10086/student/findEmailByUsername';
+                'http://springboot_app:10086/teacher/findEmailByUsername' :
+                'http://springboot_app:10086/student/findEmailByUsername';
 
             // 调用后端API获取邮箱地址
             axios.get(apiUrl, { params: { username: this.ruleForm.username } })
@@ -124,8 +124,8 @@ export default {
 
                         // 根据用户类型构造发送验证码的API地址
                         const sendUrl = this.ruleForm.type === 'teacher' ?
-                            'http://localhost:10086/teacher/sendEailCode' :
-                            'http://localhost:10086/student/sendEailCode';
+                            'http://springboot_app:10086/teacher/sendEailCode' :
+                            'http://springboot_app:10086/student/sendEailCode';
 
                         // 发送验证码
                         axios.post(sendUrl, null, { params })
@@ -198,9 +198,9 @@ export default {
                     // 根据用户类型选择访问学生或老师的修改密码接口
                     let url = '';
                     if (this.ruleForm.type === 'teacher') {
-                        url = 'http://localhost:10086/teacher/updatePassword';
+                        url = 'http://springboot_app:10086/teacher/updatePassword';
                     } else if (this.ruleForm.type === 'student') {
-                        url = 'http://localhost:10086/student/updatePassword';
+                        url = 'http://springboot_app:10086/student/updatePassword';
                     }
 
                     // 提交注册表单

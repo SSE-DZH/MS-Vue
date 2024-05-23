@@ -34,7 +34,7 @@ export default {
     },
     deleteTeacher(row) {
       const that = this
-      axios.get('http://localhost:10086/course/deleteById/' + row.cid).then(function (resp) {
+      axios.get('http://springboot_app:10086/course/deleteById/' + row.cid).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -61,7 +61,7 @@ export default {
       const schedule = row.schedule; // 获取时间表
 
       const that = this;
-      axios.get('http://localhost:10086/courseTeacher/insert/' + cid + '/' + tid + '/' + term + '/' + location + '/' + schedule).then(function (resp) {
+      axios.get('http://springboot_app:10086/courseTeacher/insert/' + cid + '/' + tid + '/' + term + '/' + location + '/' + schedule).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -121,7 +121,7 @@ export default {
         that.tmpList = null
         that.total = null
         that.tableData = null
-        axios.post("http://localhost:10086/course/findBySearch", newRuleForm).then(function (resp) {
+        axios.post("http://springboot_app:10086/course/findBySearch", newRuleForm).then(function (resp) {
           console.log("查询结果:");
           console.log(resp)
           that.tmpList = resp.data

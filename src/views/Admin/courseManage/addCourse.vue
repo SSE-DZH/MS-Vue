@@ -55,7 +55,7 @@ export default {
         if (valid) {
           // 通过前端校验
           const that = this;
-          axios.post("http://localhost:10086/course/save", this.ruleForm).then(function (resp) {
+          axios.post("http://springboot_app:10086/course/save", this.ruleForm).then(function (resp) {
             console.log(resp)
             if (resp.data === true) {
               that.$message({

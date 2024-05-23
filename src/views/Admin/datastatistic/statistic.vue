@@ -49,7 +49,7 @@ export default {
     // 获取课程列表
     async getCourses() {
       try {
-        const response = await this.$axios.get('http://localhost:10086/course/findAllCname');
+        const response = await this.$axios.get('http://springboot_app:10086/course/findAllCname');
         this.courses = response.data;
         // 在下一次 DOM 更新周期执行初始化
         this.$nextTick(() => {
@@ -62,7 +62,7 @@ export default {
     // 获取所有学期列表
     async findAllTerm() {
       try {
-        const response = await this.$axios.get('http://localhost:10086/SCT/findAllTerm');
+        const response = await this.$axios.get('http://springboot_app:10086/SCT/findAllTerm');
         this.terms = response.data;
       } catch (error) {
         console.error('Error fetching terms:', error);
@@ -112,7 +112,7 @@ export default {
       }
       // 发送请求获取课程成绩分布数据
       // 注意修改请求地址和参数传递方式
-      this.$axios.post(`http://localhost:10086/SCT/findByCname/${this.selectedCourse}/${this.selectedTerm}`)
+      this.$axios.post(`http://springboot_app:10086/SCT/findByCname/${this.selectedCourse}/${this.selectedTerm}`)
         .then(response => {
           // 检查返回数据是否为空
           if (!response.data || Object.keys(response.data).length === 0) {
@@ -211,7 +211,7 @@ export default {
       }
       // 发送请求导出数据
       // 根据实际情况修改请求地址和参数传递方式
-      this.$axios.get(`http://localhost:10086/SCT/export/${this.selectedCourse}/${this.selectedTerm}`, { responseType: 'blob' })
+      this.$axios.get(`http://springboot_app:10086/SCT/export/${this.selectedCourse}/${this.selectedTerm}`, { responseType: 'blob' })
         .then(response => {
           // 创建blob对象
           const blob = new Blob([response.data]);

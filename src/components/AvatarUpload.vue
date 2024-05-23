@@ -17,7 +17,7 @@
 export default {
   data() {
     return {
-      uploadUrl: 'http://localhost:10086/common/upload', // 后端上传接口地址
+      uploadUrl: 'http://springboot_app:10086/common/upload', // 后端上传接口地址
       defaultImageUrl: 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png', // 默认图片地址
       fileList: [],//上传的文件列表
       limitnum: 2,//最大允许上传个数 
@@ -46,7 +46,7 @@ export default {
       var form = new FormData();
       // 文件对象
       form.append("file", fileObj);
-      axios.post('http://localhost:10086/common/upload', form).then(res => {
+      axios.post('http://springboot_app:10086/common/upload', form).then(res => {
         param.onSuccess(res)
       }).catch(({ err }) => {
         param.onError(err)
@@ -71,8 +71,8 @@ export default {
 
         // 根据用户类型选择更新学生或老师的头像信息的接口
         const updateUrl = sessionStorage.getItem("type") === 'teacher' || sessionStorage.getItem("type") === 'admin' ?
-          'http://localhost:10086/teacher/updateAvatar' :
-          'http://localhost:10086/student/updateAvatar';
+          'http://springboot_app:10086/teacher/updateAvatar' :
+          'http://springboot_app:10086/student/updateAvatar';
 
         // 构造更新头像信息的请求参数
         let data = {};

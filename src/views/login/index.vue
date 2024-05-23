@@ -178,7 +178,7 @@ export default {
           }
 
           // 发送请求获取当前学期
-          axios.get('http://localhost:10086/info/getCurrentTerm')
+          axios.get('http://springboot_app:10086/info/getCurrentTerm')
             .then(function (resp) {
               // 获取到后端返回的当前学期值
               const currentTerm = resp.data;
@@ -202,7 +202,7 @@ export default {
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
             console.log("教师登录");
             let form = { username: that.ruleForm.username, password: that.ruleForm.password };
-            this.$store.dispatch('auth/login', { apiUrl: "http://localhost:10086/teacher/login", form }).then(function (resp) {
+            this.$store.dispatch('auth/login', { apiUrl: "http://springboot_app:10086/teacher/login", form }).then(function (resp) {
               console.log("教师登陆验证信息：" + JSON.stringify(resp.data));
               console.log("仓库中的Token信息：" + that.$store.state.auth.token); // 打印仓库中的 token 信息
               console.log(resp.data.code);
@@ -211,7 +211,7 @@ export default {
               if (check === 1) {
                 // 登录成功后的逻辑...
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + that.$store.state.auth.token;
-                axios.get("http://localhost:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
+                axios.get("http://springboot_app:10086/teacher/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data);
                   let name = resp.data.tname;
                   let email = resp.data.email;
@@ -262,12 +262,12 @@ export default {
             });
           } else if (that.ruleForm.type === 'student') {
             let form = { username: that.ruleForm.username, password: that.ruleForm.password };
-            axios.post("http://localhost:10086/student/login", form).then(function (resp) {
+            axios.post("http://springboot_app:10086/student/login", form).then(function (resp) {
               console.log("学生登陆验证信息：" + resp.data);
               let check = resp.data.code;
               if (check === 1) {
                 // 登录成功后的逻辑...
-                axios.get("http://localhost:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
+                axios.get("http://springboot_app:10086/student/findByUsername/" + that.ruleForm.username).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data);
                   let name = resp.data.sname;
                   let email = resp.data.email;

@@ -60,7 +60,7 @@ export default {
     else {
       this.ruleForm.sid = this.$route.query.sid
     }
-    axios.get('http://localhost:10086/student/findById/' + this.ruleForm.sid).then(function (resp) {
+    axios.get('http://springboot_app:10086/student/findById/' + this.ruleForm.sid).then(function (resp) {
       that.ruleForm = resp.data
     })
   },
@@ -71,7 +71,7 @@ export default {
           // 通过前端校验
           const that = this
           console.log(this.ruleForm)
-          axios.post("http://localhost:10086/student/updateStudent", this.ruleForm).then(function (resp) {
+          axios.post("http://springboot_app:10086/student/updateStudent", this.ruleForm).then(function (resp) {
             if (resp.data === true) {
               that.$message({
                 showClose: true,
