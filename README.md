@@ -1,2 +1,2 @@
-# StudentMS-Vue
-StudentMS前端vue
+# MS-Vue
+MS前端vue
